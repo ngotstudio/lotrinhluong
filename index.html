@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lộ Trình Lương | Ngọt Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --noir:#14100E; --noir-soft:#221C18;
+    --ivory:#F7F3EC; --ivory-2:#EFE9DF;
+    --ghost:rgba(20,16,14,.05);
+    --line:rgba(20,16,14,.12); --line-2:rgba(20,16,14,.20);
+    --sand:#8C6D4F; --sand-lt:#B39476;
+    --ink:#2A231E; --muted:#6B5F55;
+    --red:#A8382E; --green:#3F6B4F; --amber:#B07A22;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Manrope',system-ui,-apple-system,sans-serif;background:var(--ivory);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  header{background:var(--noir);color:var(--ivory);padding:50px 0 0}
+  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--sand-lt);font-weight:600;margin-bottom:16px}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,5vw,54px);line-height:1.08;margin-bottom:14px}
+  h1 em{font-style:italic;color:var(--sand-lt)}
+  .lede{max-width:680px;color:rgba(247,243,236,.72);font-size:15px;margin-bottom:34px}
+
+  /* cong thuc luong o header */
+  .fx{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:rgba(247,243,236,.14);border-top:1px solid rgba(247,243,236,.14)}
+  .fx-c{background:var(--noir);padding:18px 16px 22px}
+  .fx-c .n{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--sand-lt);font-weight:800;margin-bottom:7px}
+  .fx-c .t{font-weight:800;font-size:14.5px;line-height:1.25;margin-bottom:5px}
+  .fx-c .d{font-size:12px;color:rgba(247,243,236,.55);line-height:1.5}
+
+  .nav{position:sticky;top:0;z-index:60;background:rgba(247,243,236,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;flex-wrap:wrap;align-items:center}
+  .nav a{text-decoration:none;color:var(--muted);font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:14px 18px;border-bottom:2px solid transparent;transition:.18s}
+  .nav a:hover{color:var(--ink);border-bottom-color:var(--sand)}
+
+  section{padding:48px 0}
+  .sec-head{margin-bottom:26px;border-bottom:1px solid var(--line);padding-bottom:16px}
+  .sec-head .lbl{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--sand);font-weight:700;margin-bottom:9px}
+  .sec-head h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(25px,3.4vw,36px);line-height:1.15}
+  .sec-head h2 em{font-style:italic;color:var(--sand)}
+  .sec-head p{color:var(--muted);font-size:14px;margin-top:8px;max-width:720px}
+
+  .calc{display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start}
+  @media(max-width:940px){.calc{grid-template-columns:1fr}}
+  .panel{background:#fff;border:1px solid var(--line-2)}
+  .panel-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);background:var(--ivory-2)}
+  .panel-h .t{font-size:11px;letter-spacing:.17em;text-transform:uppercase;font-weight:800;color:var(--sand)}
+  .panel-h .sm{font-size:12px;color:var(--muted);font-weight:600;text-align:right}
+  .panel-b{padding:16px 18px}
+  .panel + .panel{margin-top:18px}
+
+  .fieldrow{display:flex;align-items:center;gap:12px;margin-bottom:11px;flex-wrap:wrap}
+  .fieldrow label{font-size:13.5px;font-weight:700;min-width:118px}
+  .fieldrow .hint{font-size:12.5px;color:var(--muted)}
+  select,input[type=number],input[type=text]{font-family:'Manrope',sans-serif;font-size:14px;padding:8px 10px;border:1px solid var(--line-2);background:#fff;color:var(--ink);border-radius:0}
+  select{min-width:210px}
+  input[type=number]{width:100px;text-align:right}
+  input[type=text]{flex:1;min-width:140px}
+  input.js-money{text-align:right;flex:none;min-width:0;font-variant-numeric:tabular-nums}
+  input:focus,select:focus{outline:2px solid var(--sand-lt);outline-offset:-1px}
+
+  table.grid{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.grid th{text-align:left;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:7px 8px;border-bottom:1px solid var(--line-2)}
+  table.grid td{padding:7px 8px;border-bottom:1px solid var(--line)}
+  table.grid tr:last-child td{border-bottom:none}
+  table.grid td.num,table.grid th.num{text-align:right;font-variant-numeric:tabular-nums}
+  table.grid td.money{font-weight:700;color:var(--sand);white-space:nowrap}
+  table.grid .lbl-c{font-weight:700}
+  table.grid .note-c{font-size:12px;color:var(--muted);font-weight:400;display:block}
+  .sumrow td{border-top:2px solid var(--line-2)!important;background:var(--ghost);font-weight:800}
+
+  .res{position:sticky;top:60px}
+  .perf-num{font-family:'Cormorant Garamond',serif;font-size:50px;line-height:1;font-variant-numeric:tabular-nums}
+  .perf-sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .badge{display:inline-flex;align-items:center;font-size:13px;font-weight:800;padding:6px 14px;color:#14100E;white-space:nowrap}
+  .barwrap{margin-top:14px}
+  .barrow{margin-bottom:11px}
+  .barrow .top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px}
+  .barrow .top span{color:var(--muted);font-variant-numeric:tabular-nums}
+  .bartrack{height:6px;background:var(--ivory-2);position:relative;overflow:hidden}
+  .barfill{position:absolute;left:0;top:0;bottom:0;background:var(--sand);transition:width .35s ease}
+  .bartrack .mark{position:absolute;top:-2px;bottom:-2px;width:1px;background:var(--noir);opacity:.35}
+
+  .ml{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+  .ml:last-of-type{border-bottom:none}
+  .ml .k{color:var(--muted)}
+  .ml .k b{color:var(--sand);font-weight:800;font-size:11px;letter-spacing:.06em}
+  .ml .v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .total{margin-top:12px;padding:16px 18px;background:var(--noir);color:var(--ivory)}
+  .total .k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--sand-lt);font-weight:700}
+  .total .v{font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums}
+  .total .f{font-size:11.5px;color:rgba(247,243,236,.55);margin-top:9px;line-height:1.55}
+
+  .nudge{margin-top:14px;padding:13px 15px;background:rgba(140,109,79,.09);border-left:2px solid var(--sand);font-size:13.5px;line-height:1.55}
+  .nudge b{color:var(--sand)}
+  .nudge.ok{background:rgba(63,107,79,.08);border-color:var(--green)}
+  .nudge.ok b{color:var(--green)}
+
+  .rule{margin-top:14px;padding:13px 15px;background:var(--ghost);border-left:2px solid var(--noir)}
+  .rule-h{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--sand);margin-bottom:6px}
+  .rule p{font-size:12.8px;line-height:1.55;color:var(--muted)}
+  .rule p b{color:var(--ink)}
+
+  .m3{display:flex;gap:1px;background:var(--line-2);border:1px solid var(--line-2);margin-top:9px}
+  .m3c{flex:1;background:#fff;padding:8px 9px;text-align:center}
+  .m3c span{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+  .m3c input[type=number]{width:100%;text-align:center;padding:5px 4px}
+  .m3c.avg{background:var(--ivory-2)}
+  .m3c.avg b{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;display:block;padding:4px 0;color:var(--sand)}
+  .ptsbox{display:flex;gap:1px;background:var(--line-2);border:1px solid var(--line-2);margin-top:12px}
+  .pt{flex:1;background:#fff;padding:9px 10px;text-align:center}
+  .pt span{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:3px}
+  .pt b{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600}
+  .pt.net.pos b{color:var(--green)}
+  .pt.net.neg b{color:var(--red)}
+  .capwarn{margin-top:10px;padding:11px 13px;background:rgba(168,56,46,.06);border-left:2px solid var(--red);font-size:13px;line-height:1.5}
+  .capwarn b{color:var(--red)}
+
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{appearance:none;cursor:pointer;font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;padding:8px 14px;border:1px solid var(--line-2);background:transparent;color:var(--ink);transition:.18s}
+  .btn:hover{background:var(--noir);color:var(--ivory);border-color:var(--noir)}
+  .btn.dark{background:var(--noir);color:var(--ivory);border-color:var(--noir)}
+  .btn.dark:hover{background:var(--sand);border-color:var(--sand)}
+
+  .ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line-2);border:1px solid var(--line-2)}
+  .lv{background:#fff;padding:18px;cursor:pointer;transition:.18s;border-top:3px solid transparent}
+  .lv:hover{background:var(--ivory-2)}
+  .lv.on{background:var(--ivory-2);border-top-color:var(--sand)}
+  .lv .n{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--sand);font-weight:800;margin-bottom:8px}
+  .lv .t{font-weight:800;font-size:15.5px}
+  .lv .s{font-family:'Cormorant Garamond',serif;font-size:26px;margin:6px 0 2px}
+  .lv .d{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .lv-detail{margin-top:16px;border:1px solid var(--line-2);background:#fff;padding:20px}
+  .lv-detail h4{font-size:16px;font-weight:800;margin-bottom:10px}
+  .lv-detail ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .lv-detail li{position:relative;padding-left:18px;font-size:14px}
+  .lv-detail li::before{content:"";position:absolute;left:3px;top:10px;width:6px;height:1px;background:var(--sand)}
+  .lv-detail .hint{margin-top:12px;font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:11px}
+
+  .an-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--line-2);border:1px solid var(--line-2)}
+  .an{background:#fff;padding:16px 16px 18px;border-top:4px solid}
+  .an .t{font-weight:800;font-size:16px}
+  .an .h{font-family:'Cormorant Garamond',serif;font-size:30px;line-height:1.1}
+  .an .d{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .an.cur{background:var(--ivory-2);box-shadow:inset 0 0 0 2px var(--noir)}
+
+  .score{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+  @media(max-width:940px){.score{grid-template-columns:1fr}}
+  .srow{margin-bottom:16px}
+  .srow .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:3px}
+  .srow .top b{font-size:14px;font-weight:800}
+  .srow .top .v{font-weight:800;color:var(--sand);font-variant-numeric:tabular-nums}
+  .srow .desc{font-size:12.5px;color:var(--muted);margin-bottom:7px}
+  input[type=range]{width:100%;accent-color:var(--sand)}
+  .sk{display:grid;grid-template-columns:1fr 240px;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--line-2);font-size:13px}
+  .sk select{min-width:0;width:100%}
+  .sk .src{display:block;font-size:11px;color:var(--muted)}
+  .sclevels{font-size:11.5px;color:var(--muted);margin:2px 0 6px;line-height:1.5}
+  .scwarn{margin-top:8px;font-size:12.5px;color:var(--red);font-weight:700}
+  .scin{display:flex;align-items:center;gap:10px;margin-top:4px}
+  .scin input{width:90px;text-align:center}
+  @media(max-width:560px){.sk{grid-template-columns:1fr}}
+  .verdict{padding:18px;border:1px solid var(--line-2);background:#fff}
+  .verdict .big{font-family:'Cormorant Garamond',serif;font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
+  .verdict .of{font-size:13px;color:var(--muted)}
+  .verdict .msg{margin-top:12px;padding:12px 14px;font-size:13.5px;line-height:1.55}
+  .verdict .msg.pass{background:rgba(63,107,79,.09);border-left:2px solid var(--green)}
+  .verdict .msg.fail{background:rgba(176,122,34,.09);border-left:2px solid var(--amber)}
+
+  .ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+
+  .warn{background:var(--noir)}
+  .warn .sec-head{border-color:rgba(247,243,236,.16)}
+  .warn .sec-head .lbl{color:var(--amber)}
+  .warn .sec-head h2{color:var(--ivory)}
+  .warn .sec-head h2 em{color:var(--sand-lt)}
+  .warn .sec-head p{color:rgba(247,243,236,.6)}
+  .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:rgba(247,243,236,.14)}
+  .wc{background:var(--noir);padding:20px;color:var(--ivory)}
+  .wc .n{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--amber);margin-bottom:8px;letter-spacing:.1em}
+  .wc h4{font-size:14.5px;font-weight:800;margin-bottom:6px}
+  .wc p{font-size:13px;color:rgba(247,243,236,.62);line-height:1.55}
+  .wc .fix{margin-top:8px;font-size:12.5px;color:var(--sand-lt);font-weight:600;line-height:1.6}
+
+  .lede b{color:var(--sand-lt)}
+  .fx-c.hi{background:#2A211A}
+  .badge{flex-direction:column;line-height:1.25;padding:7px 15px}
+  .badge .kx{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700}
+  .ml .k i{font-style:normal;color:var(--ink);font-weight:700}
+  .nudge.warn{background:rgba(168,56,46,.06);border-color:var(--red)}
+  .nudge.warn b{color:var(--red)}
+  .an .money{font-size:12.5px;font-weight:700;color:var(--sand);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
+  .barrow .top{gap:8px}
+  .barrow .top span{white-space:nowrap}
+  .fieldrow label{min-width:150px}
+  input.money-in{width:170px}
+  .dept{display:flex;gap:0;margin-bottom:26px;border:1px solid rgba(247,243,236,.22);width:max-content;max-width:100%;flex-wrap:wrap}
+  .dept button{appearance:none;cursor:pointer;font-family:'Manrope',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:10px 18px;background:transparent;color:rgba(247,243,236,.7);border:none;border-right:1px solid rgba(247,243,236,.22);transition:.18s}
+  .dept button:last-child{border-right:none}
+  .dept button:hover{color:var(--ivory);background:rgba(247,243,236,.06)}
+  .dept button.on{background:var(--sand);color:var(--noir)}
+  .navdept{margin-left:auto;display:flex;align-items:center;gap:8px;padding:6px 0 6px 18px}
+  .navdept span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}
+  .navdept select{min-width:0;padding:6px 8px;font-size:13px;font-weight:700}
+  .nav a{padding:14px 13px}
+  .skx{grid-template-columns:1fr 280px}
+  .skx-in{display:flex;gap:6px;flex-wrap:wrap}
+  .skx-in input{flex:1 1 140px;min-width:0;padding:6px 8px;font-size:13px}
+  .skx-in input.skx-dept{flex:0 1 170px}
+  .g360 input[type=number]{width:80px}
+  .skx-r{display:flex;gap:6px}
+  .skx-r select{flex:1;min-width:0}
+  .skx-del{padding:6px 11px;font-size:15px;line-height:1}
+  .calc>*,.score>*{min-width:0}
+  select{max-width:100%}
+  .panel-b{overflow-x:auto}
+  @media(max-width:560px){.fieldrow label{min-width:0;width:100%}.wrap{padding:0 16px}table.grid input[type=number]{width:70px}input.money-in{width:130px}.skx{grid-template-columns:1fr}}
+  @media(max-width:760px){.navdept{margin-left:0;padding:8px 13px;width:100%}.dept{width:100%;flex-wrap:nowrap}.dept button{flex:1 1 0;padding:10px 6px;font-size:11.5px;letter-spacing:0}}
+  footer{background:var(--noir);color:rgba(247,243,236,.5);padding:30px 0;text-align:center;font-size:12.5px;border-top:1px solid rgba(247,243,236,.14)}
+  footer .bn{font-family:'Cormorant Garamond',serif;font-size:23px;color:var(--ivory);margin-bottom:6px}
+
+  @media print{.nav,.btnrow{display:none}body{background:#fff}.res{position:static}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow" id="eyebrow">Ngọt Studio</div>
+    <div class="dept" id="deptTabs" role="tablist" aria-label="Chọn bộ phận"></div>
+    <h1>Lộ Trình Lương<br><em>Tự tính thu nhập của mình</em></h1>
+    <p class="lede" id="lede"></p>
+  </div>
+  <div class="wrap" style="padding:0">
+    <div class="fx">
+      <div class="fx-c"><div class="n">Khoản 1</div><div class="t">Lương cứng</div><div class="d">Cố định theo bậc nghề. Xét lại 3 tháng một lần, sau khi thăng bậc thì 6 tháng.</div></div>
+      <div class="fx-c" id="fx2"><div class="n">Khoản 2</div><div class="t" id="fx2t"></div><div class="d" id="fx2d"></div></div>
+      <div class="fx-c"><div class="n">Khoản 3</div><div class="t">Lương phụ cấp</div><div class="d">Phần trăm doanh thu tháng theo chức danh quản lý.</div></div>
+      <div class="fx-c"><div class="n">Khoản 4</div><div class="t">Lương OT</div><div class="d">Giờ làm ngoài ca theo phân công có xác nhận.</div></div>
+      <div class="fx-c"><div class="n">Khoản 5</div><div class="t">Thưởng / phạt</div><div class="d">Điểm ròng theo quy chế, quy đổi 50.000đ một điểm.</div></div>
+      <div class="fx-c"><div class="n">Khoản 6</div><div class="t">Lương ngoài</div><div class="d">Các khoản phát sinh ngoài 5 khoản trên.</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-in">
+      <a href="#calc">Máy tính lương</a>
+      <a href="#lotrinh">Lộ trình 5 bậc nghề</a>
+      <a href="#capbac">5 cấp hiệu suất</a>
+      <a href="#diem">Tự chấm điểm thăng cấp</a>
+      <a href="#daotao">Đào tạo &amp; phát triển</a>
+      <label class="navdept"><span>Bộ phận</span><select id="deptSel" aria-label="Chọn bộ phận"></select></label>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= CALCULATOR ================= -->
+<section id="calc">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="lbl">Máy tính</div>
+      <h2>Thu Nhập Tháng — <em>6 Khoản Cấu Thành</em></h2>
+      <p>Điền lần lượt từ khoản 1 đến khoản 6. Bảng kết quả bên phải cập nhật ngay theo từng ô bạn gõ.</p>
+    </div>
+
+    <div class="btnrow" style="margin-bottom:16px">
+      <button class="btn dark" id="btnDemo">Xem ví dụ</button>
+      <button class="btn" id="btnReset">Xoá hết, tự nhập</button>
+    </div>
+
+    <div class="calc">
+      <div>
+
+        <!-- 1. LUONG CUNG -->
+        <div class="panel">
+          <div class="panel-h"><div class="t">Khoản 1 · Lương cứng</div><div class="sm">theo bậc nghề</div></div>
+          <div class="panel-b">
+            <div class="fieldrow">
+              <label for="rank">Bậc nghề</label>
+              <select id="rank"></select>
+              <span class="hint">Lương cứng: <b id="baseTxt" style="color:var(--sand);font-size:15px"></b></span>
+            </div>
+            <div class="hint">Bậc nghề xét lại 3 tháng một lần, riêng người vừa thăng bậc thì kỳ kế tiếp cách 6 tháng. Điều kiện lên bậc xem ở mục Lộ trình 5 bậc nghề.</div>
+          </div>
+        </div>
+
+        <!-- 2. KHOAN 2 — RIENG TUNG BO PHAN -->
+        <div class="panel">
+          <div class="panel-h"><div class="t" id="k2Title"></div><div class="sm" id="k2Sm"></div></div>
+          <div class="panel-b" id="k2Body"></div>
+        </div>
+
+        <!-- 3. LUONG PHU CAP -->
+        <div class="panel">
+          <div class="panel-h"><div class="t">Khoản 3 · Lương phụ cấp</div><div class="sm">theo chức danh quản lý</div></div>
+          <div class="panel-b">
+            <div class="fieldrow">
+              <label for="role">Chức danh</label>
+              <select id="role"></select>
+              <span class="hint">Tỷ lệ phụ cấp: <b id="roleRate" style="color:var(--sand);font-size:15px">0%</b></span>
+            </div>
+            <div class="fieldrow">
+              <label for="revMonth">Doanh thu tháng</label>
+              <input type="text" inputmode="numeric" class="js-money" id="revMonth" value="0" style="width:170px">
+              <span class="hint">tổng doanh thu cơ sở trong tháng, lấy trên Larkbase</span>
+            </div>
+            <div class="fieldrow">
+              <label for="teamPct">Team đạt chỉ tiêu</label>
+              <input type="number" id="teamPct" min="0" max="200" step="1" value="100">
+              <span class="hint">% hoàn thành chỉ tiêu chung của team trong tháng</span>
+            </div>
+            <table class="grid" style="margin-top:6px">
+              <tr class="sumrow"><td>Lương phụ cấp</td><td class="num money" id="allowSum">0đ</td></tr>
+            </table>
+            <div id="gateWarn"></div>
+            <div class="rule">
+              <div class="rule-h">Phụ cấp chức danh tính thế nào</div>
+              <p>Phụ cấp là <b>phần trăm trên tổng doanh thu tháng của cơ sở</b>, không phải doanh thu cá nhân. Ai không giữ chức danh quản lý thì khoản này bằng 0.</p>
+              <p style="margin-top:6px">Quyền Leader <b>0,5%</b> · Leader <b>0,8%</b> · Quyền Quản lý <b>1%</b> · Quản lý <b>2%</b>.</p>
+              <p style="margin-top:6px">Đây là khoản trả cho <b>trách nhiệm quản lý</b>, tính độc lập với hiệu suất cá nhân và không bị nhân hệ số.</p>
+              <p style="margin-top:6px"><b>Điều kiện nhận:</b> team do bạn phụ trách phải đạt tối thiểu <b>80% chỉ tiêu chung</b> trong tháng. Dưới ngưỡng đó thì phụ cấp bằng 0.</p>
+              <p style="margin-top:6px"><b>Đổi lại, chỉ tiêu cá nhân của bạn được giảm</b> theo chức danh: Quyền Leader 15% · Leader 25% · Quyền Quản lý 40% · Quản lý 60% — vì thời gian dành cho quản lý là thời gian không làm chuyên môn.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. LUONG OT -->
+        <div class="panel">
+          <div class="panel-h"><div class="t">Khoản 4 · Lương OT</div><div class="sm">giờ làm ngoài ca</div></div>
+          <div class="panel-b">
+            <div class="fieldrow">
+              <label for="otHours">Số giờ OT</label>
+              <input type="number" id="otHours" min="0" step="0.5" value="0">
+              <span class="hint">giờ trong tháng</span>
+            </div>
+            <div class="fieldrow">
+              <label for="otRate">Đơn giá OT</label>
+              <input type="text" inputmode="numeric" class="js-money" id="otRate" value="30.000" style="width:130px">
+              <span class="hint">đồng / giờ</span>
+            </div>
+            <div class="hint">Đơn giá hiện hành <b>30.000đ một giờ</b>. OT phải có phân công và xác nhận của Lead Team mới được tính.</div>
+          </div>
+        </div>
+
+        <!-- 5. THUONG / PHAT -->
+        <div class="panel">
+          <div class="panel-h"><div class="t">Khoản 5 · Thưởng / phạt</div><div class="sm">1 điểm = 50.000đ · trần phạt 10 điểm</div></div>
+          <div class="panel-b">
+            <div class="fieldrow">
+              <label for="ptBonus">Điểm thưởng</label>
+              <input type="number" id="ptBonus" min="0" step="0.5" value="0">
+              <span class="hint">tổng điểm thưởng leader đã ghi nhận trong tháng</span>
+            </div>
+            <div class="fieldrow">
+              <label for="ptPenalty">Điểm phạt</label>
+              <input type="number" id="ptPenalty" min="0" step="0.5" value="0">
+              <span class="hint">tổng điểm phạt <b>sau khi đã áp leo thang</b> lỗi nhẹ</span>
+            </div>
+            <div class="ptsbox">
+              <div class="pt"><span>Thưởng</span><b id="pbT">0</b></div>
+              <div class="pt"><span>Phạt sau trần</span><b id="pbP">0</b></div>
+              <div class="pt net"><span>Điểm ròng</span><b id="pbN">0</b></div>
+            </div>
+            <div id="capWarn"></div>
+            <div class="rule">
+              <div class="rule-h">Ba điều cần nhớ khi điền ô này</div>
+              <p id="qcRule1"></p>
+              <p style="margin-top:6px"><b>Lỗi nhẹ có leo thang.</b> Lần đầu trong tháng chỉ nhắc nhở không trừ điểm, lần hai trừ đúng mức, từ lần ba trừ gấp đôi. Số bạn điền vào ô Điểm phạt là con số leader đã tính xong theo quy tắc này.</p>
+              <p style="margin-top:6px" id="boiThuong"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. LUONG NGOAI -->
+        <div class="panel">
+          <div class="panel-h"><div class="t">Khoản 6 · Lương ngoài</div><div class="sm">khoản phát sinh, có thể âm</div></div>
+          <div class="panel-b">
+            <table class="grid">
+              <thead><tr><th>Nội dung</th><th class="num" style="width:150px">Số tiền</th></tr></thead>
+              <tbody id="tbExtra"></tbody>
+              <tfoot><tr class="sumrow"><td>Cộng</td><td class="num money" id="exSum">0đ</td></tr></tfoot>
+            </table>
+            <div class="hint" style="margin-top:8px" id="k6Hint"></div>
+          </div>
+        </div>
+
+        <!-- CHI SO HIEU SUAT — RIENG TUNG BO PHAN -->
+        <div class="panel">
+          <div class="panel-h"><div class="t" id="metTitle"></div><div class="sm" id="metSm"></div></div>
+          <div class="panel-b" id="metBody"></div>
+        </div>
+      </div>
+
+      <!-- ============ RESULTS ============ -->
+      <div class="res">
+        <div class="panel">
+          <div class="panel-h"><div class="t">Thu nhập tháng</div></div>
+          <div class="panel-b">
+            <div>
+              <div class="ml"><div class="k"><b>1</b> Lương cứng</div><div class="v" id="mlBase">0đ</div></div>
+              <div class="ml"><div class="k"><b>2</b> <span id="mlProdLbl"></span> <i id="mlKx"></i></div><div class="v" id="mlProd">0đ</div></div>
+              <div class="ml"><div class="k"><b>3</b> Lương phụ cấp <i id="mlRoleRate" style="font-style:normal;color:var(--ink);font-weight:700"></i></div><div class="v" id="mlAllow">0đ</div></div>
+              <div class="ml"><div class="k"><b>4</b> Lương OT</div><div class="v" id="mlOt">0đ</div></div>
+              <div class="ml"><div class="k"><b>5</b> Thưởng / phạt <span id="mlNetPts" style="color:var(--muted);font-weight:600"></span></div><div class="v" id="mlQc">0đ</div></div>
+              <div class="ml"><div class="k"><b>6</b> Lương ngoài</div><div class="v" id="mlEx">0đ</div></div>
+            </div>
+            <div class="total">
+              <div class="k">Tổng thu nhập tháng</div>
+              <div class="v" id="grand">0đ</div>
+              <div class="f" id="formula"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-h"><div class="t">Hiệu suất tháng</div><div class="sm" id="perfSm"></div></div>
+          <div class="panel-b">
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap">
+              <div>
+                <div class="perf-num"><span id="perfVal">0</span><span style="font-size:24px">%</span></div>
+                <div class="perf-sub">hiệu suất làm việc</div>
+              </div>
+              <div class="badge" id="animalBadge" style="background:#ddd"><span id="anName">—</span><span class="kx" id="anK"></span></div>
+            </div>
+            <div class="barwrap" id="barwrap"></div>
+            <div id="cutNote" style="font-size:12.5px;color:var(--amber);font-weight:600;line-height:1.5;margin-top:4px"></div>
+            <div class="rule">
+              <div class="rule-h" id="perfRuleH"></div>
+              <p id="perfRuleP"></p>
+              <p style="margin-top:6px">Nếu giữ đều mức này suốt 3 tháng, bạn được <b><span id="perfPts">0</span>/40 điểm</b> hiệu suất khi xét thăng cấp.</p>
+            </div>
+            <div class="nudge" id="nudge"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5 BAC NGHE ================= -->
+<section id="lotrinh" style="background:var(--ivory-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="lbl">Khoản 1 quyết định bởi cái này</div>
+      <h2>Lộ Trình <em>5 Bậc Nghề</em></h2>
+      <p>Bậc nghề quyết định lương cứng, xét lại 3 tháng một lần — riêng người vừa thăng bậc thì kỳ kế tiếp cách 6 tháng. Bấm vào từng bậc để xem điều kiện lên bậc tiếp theo.</p>
+    </div>
+    <div class="ladder" id="ladder"></div>
+    <div class="lv-detail" id="lvDetail"></div>
+  </div>
+</section>
+
+<!-- ================= 5 CAP HIEU SUAT ================= -->
+<section id="capbac">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="lbl" id="capLbl"></div>
+      <h2>5 Cấp <em>Hiệu Suất</em></h2>
+      <p id="capP"></p>
+    </div>
+    <div class="an-grid" id="anGrid"></div>
+    <div class="rule" style="margin-top:16px">
+      <div id="capRule"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TU CHAM DIEM ================= -->
+<section id="diem" style="background:var(--ivory-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="lbl">Kỳ xét định kỳ</div>
+      <h2>Tự Chấm Điểm <em>Thăng Cấp Nghề</em></h2>
+      <p>Bốn mục, 100 điểm. Ba mục đầu chấm bằng số liệu và bài test — mỗi điểm đều có bằng chứng trên Larkbase hoặc biên bản. Mục 360° do HR khảo sát.</p>
+    </div>
+    <div class="score">
+      <div class="panel"><div class="panel-b" id="scoreBody"></div></div>
+      <div>
+        <div class="verdict">
+          <div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--muted);margin-bottom:6px">Tổng điểm ước tính</div>
+          <div><span class="big" id="scTotal">0</span><span class="of"> / 100</span></div>
+          <div class="fieldrow" style="margin-top:16px;margin-bottom:6px">
+            <label for="target" style="min-width:0">Muốn lên</label>
+            <select id="target"></select>
+          </div>
+          <div class="msg" id="scMsg"></div>
+          <div class="rule" style="margin-top:14px">
+            <div class="rule-h">Chu kỳ xét duyệt</div>
+            <p><b>3 tháng một lần</b> với người đang ở bậc hiện tại.</p>
+            <p style="margin-top:6px"><b>Vừa được thăng lên bậc cao hơn thì kỳ xét kế tiếp là sau 6 tháng</b>, để có đủ thời gian chứng minh năng lực ở bậc mới.</p>
+          </div>
+          <div style="margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.55">
+            <b>Quy trình xét 4 tuần:</b><br>
+            T1 HR chốt số liệu hiệu suất và kỷ luật · T2 HR khảo sát 360° các team · T3 leader bộ phận khác test kỹ năng · T4 công bố kết quả và feedback.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DAO TAO ================= -->
+<section id="daotao">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="lbl">Chương trình đào tạo</div>
+      <h2>Đào Tạo &amp; <em>Phát Triển</em></h2>
+      <p>Ba nhóm kỹ năng và ba hình thức kèm cặp — đây là con đường để nâng điểm Kỹ năng trong kỳ xét thăng cấp.</p>
+    </div>
+    <div class="ref-grid">
+      <div class="panel">
+        <div class="panel-h"><div class="t">Đào tạo kỹ năng</div></div>
+        <div class="panel-b">
+          <table class="grid"><tbody id="trainSkills"></tbody></table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><div class="t">Hướng dẫn &amp; kèm cặp</div></div>
+        <div class="panel-b">
+          <table class="grid">
+            <tr><td class="lbl-c">Hệ thống bạn đồng hành</td><td>Cao cấp hướng dẫn Nhân viên mới</td></tr>
+            <tr><td class="lbl-c">Đào tạo chéo</td><td id="crossTrain"></td></tr>
+            <tr><td class="lbl-c">Phát triển lãnh đạo</td><td>Kỹ năng quản lý để thăng tiến</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="bn">Ngọt Studio</div>
+    <div id="footDept"></div>
+    <div style="margin-top:6px" id="footSrc"></div>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   LỘ TRÌNH LƯƠNG NGỌT STUDIO — 1 file cho 3 bộ phận
+   Phần CHUNG: lương cứng, phụ cấp, OT, thưởng/phạt, lương ngoài,
+               5 bậc nghề, 5 cấp hiệu suất, bảng chấm điểm thăng cấp.
+   Phần RIÊNG (DEPTS): Khoản 2, chỉ số hiệu suất, kỹ năng, mô tả.
+   Muốn thêm bộ phận: thêm 1 khối vào DEPTS.
+   ===================================================================== */
+
+/* ================= HELPERS ================= */
+const $ = id => document.getElementById(id);
+const vnd = n => (n<0?"−":"") + Math.abs(Math.round(n)).toLocaleString('vi-VN') + "đ";
+const num = n => n.toLocaleString('vi-VN');
+const pct = n => n.toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1});
+const d1  = n => n.toLocaleString('vi-VN',{maximumFractionDigits:1});
+const d2  = n => n.toLocaleString('vi-VN',{maximumFractionDigits:2});
+const k3  = n => n.toLocaleString('vi-VN',{minimumFractionDigits:3,maximumFractionDigits:3});
+const tr  = n => (n/1000000).toLocaleString('vi-VN',{maximumFractionDigits:1}) + "tr";
+const qty = id => { const el=document.querySelector(`[data-qty="${id}"]`); return el?Math.max(0,parseInt(el.value)||0):0; };
+const setTxt = (id,v) => { const el=$(id); if(el) el.textContent=v; };
+
+function groupInt(str){
+  const neg = /^\s*-/.test(str);
+  const digits = String(str).replace(/\D/g,"");
+  if(!digits) return neg ? "-" : "";
+  return (neg?"-":"") + digits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+function moneyVal(el){
+  if(!el) return 0;
+  const s = String(el.value);
+  const neg = /^\s*-/.test(s);
+  const d = s.replace(/\D/g,"");
+  return (neg?-1:1) * (parseInt(d||"0",10));
+}
+function setMoney(el, n){ if(el) el.value = groupInt(String(n)); }
+function attachMoney(el){
+  if(el.dataset.moneyOn) return; el.dataset.moneyOn = "1";
+  el.addEventListener("input", ()=>{
+    const caret = el.selectionStart;
+    const digitsBefore = el.value.slice(0, caret).replace(/\D/g,"").length;
+    el.value = groupInt(el.value);
+    let pos = 0, seen = 0;
+    while(pos < el.value.length && seen < digitsBefore){ if(/\d/.test(el.value[pos])) seen++; pos++; }
+    try{ el.setSelectionRange(pos,pos); }catch(_){}
+  });
+  el.addEventListener("blur", ()=>{ if(el.value.trim()==="" || el.value==="-") el.value = "0"; });
+}
+
+/* bảng đơn giá × số lượng (dùng cho Makeup & Stylist và SXHA) */
+function prodTable(title, list, tbId, qId, sId, first, hint){
+  return `<div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--muted);margin:${first?"0":"20px"} 0 7px">${title}</div>
+    <table class="grid">
+      <thead><tr><th>Thể loại</th><th class="num">Đơn giá</th><th class="num">Số lượng</th><th class="num">Thành tiền</th></tr></thead>
+      <tbody id="${tbId}">${list.map(r=>`
+        <tr><td class="lbl-c">${r.name}${r.note?`<span class="note-c">${r.note}</span>`:""}</td>
+          <td class="num">${vnd(r.price)}</td>
+          <td class="num"><input type="number" min="0" step="1" value="0" data-qty="${r.id}"></td>
+          <td class="num money" data-tot="${r.id}">0đ</td></tr>`).join("")}</tbody>
+      <tfoot><tr class="sumrow"><td colspan="2">Cộng</td><td class="num" id="${qId}">0</td><td class="num money" id="${sId}">0đ</td></tr></tfoot>
+    </table>${hint?`<div class="hint" style="margin-top:8px">${hint}</div>`:""}`;
+}
+function sumList(list, onlyKpi){
+  let sum=0, q=0, kpi=0;
+  list.forEach(r=>{ const n=qty(r.id); sum+=n*r.price; q+=n; if(r.kpi!==false) kpi+=n;
+    const t=document.querySelector(`[data-tot="${r.id}"]`); if(t) t.textContent=vnd(n*r.price); });
+  return {sum,q,kpi};
+}
+const csatField = `<div class="fieldrow"><label for="csat">Hài lòng khách</label>
+  <input type="number" id="csat" min="0" max="10" step="0.1" value="9.5">
+  <span class="hint">điểm trung bình tháng, chỉ tiêu 9,5 / 10</span></div>`;
+
+/* ================= DATA CHUNG ================= */
+const RANKS_BASE = [
+  {id:"tts",  name:"Thực tập sinh",       base:3000000, exp:"< 3 tháng"},
+  {id:"nv",   name:"Nhân viên",           base:4000000, exp:"3–12 tháng"},
+  {id:"cv",   name:"Chuyên viên",         base:5000000, exp:"1–2 năm"},
+  {id:"cvcc", name:"Chuyên viên cao cấp", base:6500000, exp:"2–3 năm"},
+  {id:"cg",   name:"Chuyên gia",          base:8000000, exp:"3+ năm"}
+];
+const PROMO_BASE = [
+  {to:"Nhân viên", exp:"1–3 tháng", min:70, cap:10, cross:"Nắm rõ bộ tài liệu vị trí và làm được cơ bản nhiệm vụ của mình (tối đa 10/20 điểm)", extra:[]},
+  {to:"Chuyên viên", exp:"3–12 tháng", min:80, cap:15, cross:"Biết cơ bản việc của bộ phận khác (tối đa 15/20 điểm)", extra:[]},
+  {to:"Chuyên viên cao cấp", exp:"1–2 năm", min:85, cap:17, cross:"Thành thạo 1 kỹ năng chéo của bộ phận khác (tối đa 17/20 điểm)", extra:["Mentor thành công ít nhất 1 nhân viên mới","Có ít nhất 1 sáng kiến được áp dụng"]},
+  {to:"Chuyên gia", exp:"2–5 năm", min:90, cap:20, cross:"Vận hành và điều phối được bộ phận, làm việc cùng các bộ phận khác (tối đa 20/20 điểm)", extra:["__MASTER__","Mentor thành công ít nhất 2 nhân viên","Có vai trò lãnh đạo team nhỏ 3–5 người","Tham gia đào tạo hoặc phát triển quy trình mới"]}
+];
+const ANIMALS = [
+  {name:"Ốc sên",  min:70,  max:80,   color:"#F58220"},
+  {name:"Rùa",     min:80,  max:100,  color:"#FCD535"},
+  {name:"Thỏ",     min:100, max:125,  color:"#B4D335"},
+  {name:"Sói",     min:125, max:150,  color:"#20C9A6"},
+  {name:"Báo đốm", min:150, max:null, color:"#29B6F6"}
+];
+const band = a => a.max ? `${a.min} – ${(a.max-0.1).toLocaleString('vi-VN',{minimumFractionDigits:1})}%` : `từ ${a.min}%`;
+const ROLES = [
+  {id:"none", name:"Không giữ chức danh", rate:0,     cut:0},
+  {id:"qld",  name:"Quyền Leader",        rate:0.005, cut:0.15},
+  {id:"ld",   name:"Leader",              rate:0.008, cut:0.25},
+  {id:"qql",  name:"Quyền Quản lý",       rate:0.01,  cut:0.40},
+  {id:"ql",   name:"Quản lý",             rate:0.02,  cut:0.60}
+];
+const ALLOW_GATE = 80;
+const EXTRA_ROWS = 4;
+const PT_VALUE = 50000, PT_CAP = 10;
+
+/* Chấm điểm thăng cấp: Hiệu suất 40 · Kỷ luật 20 · Kỹ năng 20 · 360° 20 */
+const SK_LEVELS = [
+  {v:0, t:"Chưa đạt",                pts:0},
+  {v:1, t:"Mức 1 · Biết",             pts:1},
+  {v:2, t:"Mức 2 · Làm có người kèm", pts:3},
+  {v:3, t:"Mức 3 · Làm độc lập",      pts:5}
+];
+const DISC_MAX = 20, DISC_STD = 15, PERF_FLOOR = 70;   /* kỷ luật: 3 tháng tối đa 15 điểm phạt là chuẩn */
+/* Đánh giá 360°: 3 nhóm người chấm, tổng 20 điểm. Mỗi nhóm HR điền điểm khảo sát trung bình thang 10. */
+const G360 = [
+  {id:"g_team",  name:"Cùng team",     who:"đồng nghiệp cùng bộ phận",        w:5},
+  {id:"g_other", name:"Team khác",     who:"đồng nghiệp các bộ phận khác",    w:7},
+  {id:"g_mgr",   name:"Quản lý",       who:"leader / quản lý trực tiếp",      w:8}
+];
+
+const RULE_SCALE_ONLY = `<div class="rule-h">Đọc bảng này thế nào cho đúng</div>
+  <p><b>Không quy đổi ra hệ số bậc thang.</b> Tên năm con vật chỉ là cách gọi cho từng khoảng hiệu suất. Con số dùng để tính là <b>chính hiệu suất thực tế của bạn</b>: 77% là 0,77 chứ không tụt về 0,70.</p>
+  <p style="margin-top:6px"><b>Ở bộ phận này hiệu suất không nhân vào lương tháng.</b> Thu nhập là tổng 6 khoản trong máy tính. Hiệu suất dùng để tính điểm ở mục Hiệu suất công việc khi xét thăng cấp nghề.</p>
+  <p style="margin-top:6px">Giữ hiệu suất cao đều đặn ba tháng chính là cách lên bậc nghề — và lên bậc nghề mới là thứ làm lương cứng tăng. Hiệu suất dưới 70% cần ngồi lại với Lead Team tìm nguyên nhân.</p>`;
+const QC_RULE_DEFAULT = `<b>Không trừ vào lương cứng.</b> Điểm ròng nhân 50.000đ ra một dòng riêng trong bảng lương, có thể âm hoặc dương.`;
+const K6_DEFAULT = `Khoản này phát sinh ngoài nên để tự nhập. Ghi rõ nội dung ở cột bên trái. Khoản bị trừ, ví dụ bồi thường thiệt hại vật chất, thì điền <b>số âm</b>.`;
+const RANK_DESC_CREATIVE = ["Thực tập, học việc","Độc lập ý tưởng cơ bản","Thành thạo đa ý tưởng","Dẫn dắt nhóm, ý tưởng khó","Bậc thầy, nghiên cứu, sáng tạo"];
+
+/* ================= DỮ LIỆU RIÊNG TỪNG BỘ PHẬN ================= */
+const DEPTS = {
+
+/* ---------------------------------------------------------------- MAKEUP & STYLIST */
+ms: {
+  name:"Makeup & Stylist", tab:"Makeup & Stylist",
+  lede:"Thu nhập của bạn gồm 6 khoản. Điền số liệu tháng này vào máy tính bên dưới, mọi con số tự cập nhật ngay — kèm cả việc còn thiếu bao nhiêu để lên cấp hiệu suất và lên bậc nghề tiếp theo.",
+  fx2:{t:"Lương sản phẩm", d:"Đơn giá theo từng concept hỗ trợ và từng mặt makeup.", hi:false},
+  k2Title:"Khoản 2 · Lương sản phẩm", k2Sm:"chỉ tiêu 120 concept · 50 mặt", mlProd:"Lương sản phẩm",
+  TARGET:{concept:120, make:50, csat:9.5}, WEIGHTS:{concept:.45, make:.45, csat:.10},
+  SUPPORT:[
+    {id:"s1", name:"Concept bé",                       note:"bố trí đơn giản, bé ngoan",        price:15000,  kpi:true},
+    {id:"s2", name:"Concept Gia đình / Bầu / Làm đẹp", note:"nhiều người, bố trí phức tạp",     price:30000,  kpi:true},
+    {id:"s3", name:"Trẻ sơ sinh / Gia đình lớn",       note:"kỹ năng cao, thời gian lâu",       price:50000,  kpi:true},
+    {id:"s4", name:"Khác — concept phát sinh",         note:"chụp kỷ niệm cùng, thể loại khác", price:15000,  kpi:true},
+    {id:"s5", name:"Sự kiện nhỏ",                      note:"không tính vào chỉ tiêu concept",  price:50000,  kpi:false},
+    {id:"s6", name:"Sự kiện lớn",                      note:"không tính vào chỉ tiêu concept",  price:100000, kpi:false}
+  ],
+  MAKEUP:[
+    {id:"m1", name:"Makeup bé",        note:"makeup và làm tóc theo layout rõ ràng",  price:50000},
+    {id:"m2", name:"Makeup người lớn", note:"makeup và làm tóc theo layout rõ ràng",  price:150000},
+    {id:"m3", name:"Makeup sự kiện",   note:"khách đi tiệc, tại nhà khách",           price:200000},
+    {id:"m4", name:"Makeup nâng cao",  note:"layout yêu cầu phức tạp, khó thực hiện", price:200000}
+  ],
+  k2Html(){ return prodTable("Hỗ trợ ca chụp — tính theo concept", this.SUPPORT, "tbSupport","supQty","supSum", true,
+      "Hai dòng <b>Sự kiện</b> vẫn được trả tiền nhưng không tính vào chỉ tiêu 120 concept.")
+    + prodTable("Makeup + Hair — tính theo sản phẩm", this.MAKEUP, "tbMakeup","mkQty","mkSum")
+    + `<table class="grid" style="margin-top:16px"><tr class="sumrow"><td>Tổng lương sản phẩm</td><td class="num money" id="prodSum">0đ</td></tr></table>`; },
+  metTitle:"Chỉ số phục vụ xét thăng cấp", metSm:"không ảnh hưởng lương tháng",
+  metHtml: csatField + `<div class="hint">Cùng với số concept và số mặt make ở Khoản 2, ba chỉ số này tạo ra hiệu suất tháng — dùng khi xét thăng cấp nghề, không nhân vào lương.</div>`,
+  perfSm:"trọng số 45 / 45 / 10",
+  bars:["Concept hỗ trợ · 45%","Mặt makeup · 45%","Hài lòng khách · 10%"],
+  perfRuleH:"Hiệu suất dùng để làm gì",
+  perfRuleP:"Cấp hiệu suất <b>không nhân vào lương tháng</b>. Nó quyết định điểm ở mục Hiệu suất công việc trong bảng xét thăng cấp nghề, 3 tháng một lần.",
+  compute(TG){
+    const sp=sumList(this.SUPPORT), mk=sumList(this.MAKEUP);
+    setTxt("supQty",num(sp.q)); setTxt("supSum",vnd(sp.sum));
+    setTxt("mkQty",num(mk.q));  setTxt("mkSum",vnd(mk.sum));
+    const prod=sp.sum+mk.sum; setTxt("prodSum",vnd(prod));
+    const csat=Math.max(0,parseFloat($("csat").value)||0);
+    const p1=sp.kpi/TG.concept*100, p2=mk.q/TG.make*100, p3=csat/this.TARGET.csat*100;
+    const W=this.WEIGHTS, perf=p1*W.concept+p2*W.make+p3*W.csat;
+    return {amt:prod, k2f:vnd(prod), perf, bars:[
+      {txt:`${num(sp.kpi)} / ${num(Math.round(TG.concept))} · ${pct(p1)}%`, p:p1},
+      {txt:`${num(mk.q)} / ${num(Math.round(TG.make))} · ${pct(p2)}%`, p:p2},
+      {txt:`${csat.toLocaleString('vi-VN')} / ${this.TARGET.csat.toLocaleString('vi-VN')} · ${pct(p3)}%`, p:p3}]};
+  },
+  nudge(perf, nx, TG){
+    const need=nx.min-perf, W=this.WEIGHTS;
+    const addMake=Math.ceil(need/((1/TG.make*100)*W.make)), addCon=Math.ceil(need/((1/TG.concept*100)*W.concept));
+    return `Còn <b>${pct(need)}%</b> nữa là lên cấp hiệu suất <b>${nx.name}</b>.<br>
+      Tương đương <b>${num(addMake)} mặt makeup người lớn</b> (khoảng <b>${vnd(addMake*this.MAKEUP[1].price)}</b> lương sản phẩm)
+      hoặc <b>${num(addCon)} concept gia đình</b> (khoảng <b>${vnd(addCon*this.SUPPORT[1].price)}</b>).<br>
+      Mỗi 1% hiệu suất tăng thêm cộng <b>0,4 điểm</b> cho kỳ xét thăng cấp — chạm mốc ${nx.name} là thêm khoảng <b>${d1(Math.max(0,Math.min(40,nx.min/100*40)-Math.min(40,perf/100*40)))} điểm</b>.`;
+  },
+  nudgeTop:`<b>Báo đốm</b> — cấp hiệu suất cao nhất, và bạn đang lấy trọn <b>40/40 điểm</b> hiệu suất cho kỳ xét thăng cấp.`,
+  capLbl:"Tên gọi cho từng khoảng hiệu suất",
+  capP:"Tính lại hàng tháng theo kết quả thực tế. Cấp của bạn tháng này đang được tô đậm. Đây chỉ là tên gọi — con số dùng để tính luôn là hiệu suất thực tế, không làm tròn xuống.",
+  capRule:RULE_SCALE_ONLY,
+  anCard:()=>`<div class="d">tên gọi cho khoảng hiệu suất này</div>`,
+  rankDesc:RANK_DESC_CREATIVE,
+  master:"Master cả Stylist + Makeup, chứng minh bằng portfolio",
+  levelTail:"chưa kể lương sản phẩm và thưởng",
+  qcRule:QC_RULE_DEFAULT,
+  boiThuong:"<b>Bồi thường vật chất tách riêng.</b> Làm hỏng hoặc mất thiết bị, đạo cụ, trang phục thì bồi hoàn theo giá trị còn lại — không quy ra điểm và không tính vào trần 10 điểm. Nếu tháng này có, ghi xuống Khoản 6.",
+  k6Hint:K6_DEFAULT,
+  train:[["Kỹ thuật","Makeup, làm tóc, phối trang phục theo layout"],["Sáng tạo","Bố cục, lý thuyết màu sắc, phân tích xu hướng"],["Kinh doanh","Phục vụ khách hàng, bán thêm, hiệu quả"]],
+  crossTrain:"Makeup &amp; Stylist ↔ Sản xuất hình ảnh",
+  skillsOwn:[
+    {name:"Nắm bộ tài liệu vị trí",                  src:"test viết quy trình"},
+    {name:"Makeup + làm tóc bé theo layout",         src:"vị trí Makeup & Stylist"},
+    {name:"Makeup + làm tóc người lớn theo layout",  src:"vị trí Makeup & Stylist"},
+    {name:"Hỗ trợ setup concept bé",                 src:"vị trí Makeup & Stylist"}],
+  skillsCross:[
+    {name:"Chụp ảnh cơ bản theo layout",             src:"Sản xuất hình ảnh"},
+    {name:"Chọn ảnh / retouch cơ bản",               src:"Hậu kỳ"},
+    {name:"Tư vấn gói & chốt lịch cơ bản",           src:"Sale & CSKH"}],
+  footSrc:"Lưu hành nội bộ · Số liệu chính thức lấy theo báo cáo Larkbase cuối tháng",
+  demoLabel:"Xem ví dụ chị Bống (T11/2024)", demoRank:"cvcc",
+  demo(set){
+    set("s1",44); set("s2",39); set("s3",12); set("s4",11); set("s5",1); set("s6",0);
+    set("m1",14); set("m2",41); set("m3",0); set("m4",0);
+    $("csat").value=9.7; $("otHours").value=8; $("ptBonus").value=6; $("ptPenalty").value=0;
+  },
+  resetDefaults(){ $("csat").value=9.5; }
+},
+
+/* ---------------------------------------------------------------- SẢN XUẤT HÌNH ẢNH */
+sxha: {
+  name:"Sản Xuất Hình Ảnh", tab:"Sản xuất hình ảnh",
+  lede:"Thu nhập của bạn gồm 6 khoản. Điền số liệu tháng này vào máy tính bên dưới, mọi con số tự cập nhật ngay — kèm cả việc còn thiếu bao nhiêu để lên cấp hiệu suất và lên bậc nghề tiếp theo.",
+  fx2:{t:"Lương sản phẩm", d:"Đơn giá theo từng concept chụp và từng sản phẩm hậu kỳ.", hi:false},
+  k2Title:"Khoản 2 · Lương sản phẩm", k2Sm:"chỉ tiêu 100 concept · 400 ảnh", mlProd:"Lương sản phẩm",
+  TARGET:{concept:100, photo:400, csat:9.5, redo:1.5}, WEIGHTS:{concept:.40, photo:.40, csat:.10, redo:.10},
+  SHOOT:[
+    {id:"c1", name:"Concept bé",                         note:"bố trí đơn giản, bé ngoan",        price:20000},
+    {id:"c2", name:"Concept Gia đình / Bầu / Thời trang", note:"nhiều người, bố trí phức tạp",     price:40000},
+    {id:"c3", name:"Trẻ sơ sinh / Gia đình lớn",         note:"kỹ năng cao, thời gian lâu",       price:60000},
+    {id:"c4", name:"Khác — concept phát sinh",           note:"chụp kỷ niệm cùng, thể loại khác", price:20000},
+    {id:"c5", name:"Sự kiện nhỏ",                        note:"",                                 price:100000},
+    {id:"c6", name:"Sự kiện lớn",                        note:"",                                 price:200000}
+  ],
+  POST:[
+    {id:"h1", name:"Ảnh bé",             note:"chỉnh màu, chỉnh sửa cơ bản",  price:5000},
+    {id:"h2", name:"Ảnh khác",           note:"chỉnh sửa nâng cao, hiệu ứng", price:7000},
+    {id:"h3", name:"Ảnh Bigfam",         note:"chỉnh sửa ảnh đại gia đình",   price:10000},
+    {id:"h4", name:"Thiết kế album",     note:"bố cục, thiết kế, kiểu chữ",   price:50000},
+    {id:"h5", name:"Bộ ảnh sự kiện nhỏ", note:"",                             price:100000},
+    {id:"h6", name:"Bộ ảnh sự kiện lớn", note:"",                             price:200000}
+  ],
+  k2Html(){ return prodTable("Chụp hình — tính theo concept", this.SHOOT, "tbShoot","shQty","shSum", true)
+    + prodTable("Hậu kỳ — tính theo sản phẩm", this.POST, "tbPost","poQty","poSum")
+    + `<table class="grid" style="margin-top:16px"><tr class="sumrow"><td>Tổng lương sản phẩm</td><td class="num money" id="prodSum">0đ</td></tr></table>`; },
+  metTitle:"Chỉ số phục vụ xét thăng cấp", metSm:"không ảnh hưởng lương tháng",
+  metHtml: csatField + `<div class="fieldrow"><label for="redo">Số lần chỉnh lại</label>
+      <input type="number" id="redo" min="0" step="0.01" value="1.5">
+      <span class="hint">trung bình mỗi bộ ảnh, chỉ tiêu tối đa 1,5 lần</span></div>
+    <div class="rule"><div class="rule-h">Số lần chỉnh lại tính ngược chiều</div>
+      <p>Ba chỉ số kia càng cao càng tốt, riêng chỉ số này <b>càng thấp càng tốt</b>. Công thức vì thế đảo lại: lấy chỉ tiêu chia cho thực đạt. Chỉnh lại trung bình 1,2 lần thì đạt 125%, còn 2 lần thì chỉ đạt 75%.</p></div>`,
+  perfSm:"trọng số 40 / 40 / 10 / 10",
+  bars:["Số concept · 40%","Số ảnh chỉnh · 40%","Hài lòng khách · 10%","Số lần chỉnh lại · 10%"],
+  perfRuleH:"Hiệu suất dùng để làm gì",
+  perfRuleP:"Cấp hiệu suất <b>không nhân vào lương tháng</b>. Nó quyết định điểm ở mục Hiệu suất công việc trong bảng xét thăng cấp nghề, 3 tháng một lần.",
+  compute(TG){
+    const sh=sumList(this.SHOOT), po=sumList(this.POST);
+    setTxt("shQty",num(sh.q)); setTxt("shSum",vnd(sh.sum));
+    setTxt("poQty",num(po.q)); setTxt("poSum",vnd(po.sum));
+    const prod=sh.sum+po.sum; setTxt("prodSum",vnd(prod));
+    const T=this.TARGET, W=this.WEIGHTS;
+    const csat=Math.max(0,parseFloat($("csat").value)||0);
+    const redo=Math.max(0,parseFloat($("redo").value)||0);
+    const p1=sh.q/TG.concept*100, p2=po.q/TG.photo*100, p3=csat/T.csat*100;
+    const p4=redo>0?Math.min(150,T.redo/redo*100):150;
+    const perf=p1*W.concept+p2*W.photo+p3*W.csat+p4*W.redo;
+    return {amt:prod, k2f:vnd(prod), perf, bars:[
+      {txt:`${num(sh.q)} / ${num(Math.round(TG.concept))} · ${pct(p1)}%`, p:p1},
+      {txt:`${num(po.q)} / ${num(Math.round(TG.photo))} · ${pct(p2)}%`, p:p2},
+      {txt:`${csat.toLocaleString('vi-VN')} / ${T.csat.toLocaleString('vi-VN')} · ${pct(p3)}%`, p:p3},
+      {txt:`${d2(redo)} / ${T.redo.toLocaleString('vi-VN')} · ${pct(p4)}%`, p:p4}]};
+  },
+  nudge(perf, nx, TG){
+    const need=nx.min-perf, W=this.WEIGHTS;
+    const addPhoto=Math.ceil(need/((1/TG.photo*100)*W.photo)), addCon=Math.ceil(need/((1/TG.concept*100)*W.concept));
+    const addPts=Math.max(0, Math.min(40,nx.min/100*40)-Math.min(40,perf/100*40));
+    return `Còn <b>${pct(need)}%</b> nữa là lên cấp hiệu suất <b>${nx.name}</b>.<br>
+      Tương đương <b>${num(addPhoto)} ảnh chỉnh</b> loại Ảnh khác (khoảng <b>${vnd(addPhoto*this.POST[1].price)}</b> lương sản phẩm)
+      hoặc <b>${num(addCon)} concept</b> gia đình (khoảng <b>${vnd(addCon*this.SHOOT[1].price)}</b>).<br>
+      Giảm được số lần chỉnh lại cũng kéo hiệu suất lên mà không cần làm thêm việc.<br>
+      Mỗi 1% hiệu suất tăng thêm cộng <b>0,4 điểm</b> cho kỳ xét thăng cấp — chạm mốc ${nx.name} là thêm khoảng <b>${d1(addPts)} điểm</b>.`;
+  },
+  nudgeTop:`<b>Báo đốm</b> — cấp hiệu suất cao nhất, và bạn đang lấy trọn <b>40/40 điểm</b> hiệu suất cho kỳ xét thăng cấp.`,
+  capLbl:"Tên gọi cho từng khoảng hiệu suất",
+  capP:"Tính lại hàng tháng theo kết quả thực tế. Cấp của bạn tháng này đang được tô đậm. Đây chỉ là tên gọi — con số dùng để tính luôn là hiệu suất thực tế, không làm tròn xuống.",
+  capRule:RULE_SCALE_ONLY,
+  anCard:()=>`<div class="d">tên gọi cho khoảng hiệu suất này</div>`,
+  rankDesc:RANK_DESC_CREATIVE,
+  master:"Master cả chụp ảnh + hậu kỳ, chứng minh bằng portfolio",
+  levelTail:"chưa kể lương sản phẩm và thưởng",
+  qcRule:QC_RULE_DEFAULT,
+  boiThuong:"<b>Bồi thường vật chất tách riêng.</b> Làm mất file gốc, hỏng thiết bị, in sai gửi in sai thì bồi hoàn theo giá trị thực tế — không quy ra điểm và không tính vào trần 10 điểm. Nếu tháng này có, ghi xuống Khoản 6.",
+  k6Hint:K6_DEFAULT,
+  train:[["Kỹ thuật","Máy ảnh, ánh sáng, phần mềm chỉnh sửa"],["Sáng tạo","Bố cục, lý thuyết màu sắc, phân tích xu hướng"],["Kinh doanh","Phục vụ khách hàng, bán thêm, hiệu quả"]],
+  crossTrain:"Kỹ năng Chụp hình ↔ Hậu kỳ",
+  skillsOwn:[
+    {name:"Nắm bộ tài liệu vị trí",                  src:"test viết quy trình"},
+    {name:"Chụp concept bé theo layout",             src:"vị trí Sản xuất hình ảnh"},
+    {name:"Setup ánh sáng & đạo cụ concept bé",      src:"vị trí Sản xuất hình ảnh"},
+    {name:"Chỉnh màu ảnh bé đúng chuẩn",             src:"vị trí Sản xuất hình ảnh"}],
+  skillsCross:[
+    {name:"Makeup + làm tóc bé cơ bản",              src:"Makeup & Stylist"},
+    {name:"Phối trang phục & phụ kiện theo layout",  src:"Makeup & Stylist"},
+    {name:"Tư vấn gói & chốt lịch cơ bản",           src:"Sale & CSKH"},
+    {name:"Bán thêm ảnh / album tại studio",         src:"Sale & CSKH"}],
+  footSrc:"Lưu hành nội bộ · Số liệu chính thức lấy theo báo cáo Larkbase cuối tháng",
+  demoLabel:"Xem ví dụ anh Bảo (T11/2024)", demoRank:"cvcc",
+  demo(set){
+    /* Chụp: BABY 58 · FAM 19 + THỜI TRANG 8 + BẦU 1 = 28 · BIG FAM 6 + NEW BORN 17 = 23 · KẾ 16 · SỰ KIỆN NHỎ 1 */
+    set("c1",58); set("c2",28); set("c3",23); set("c4",16); set("c5",1); set("c6",0);
+    /* Hậu kỳ: Ảnh bé 211 · Ảnh khác 236 · Album 1 · Bộ ảnh sự kiện nhỏ 2 */
+    set("h1",211); set("h2",236); set("h3",0); set("h4",1); set("h5",2); set("h6",0);
+    $("csat").value=9.7; $("redo").value=1.38; $("otHours").value=8; $("ptBonus").value=6; $("ptPenalty").value=0;
+  },
+  resetDefaults(){ $("csat").value=9.5; $("redo").value=1.5; }
+},
+
+/* ---------------------------------------------------------------- SALE & CSKH */
+sale: {
+  name:"Sale & CSKH", tab:"Sale & CSKH",
+  lede:"Thu nhập của bạn gồm 6 khoản. Khác các bộ phận còn lại ở một điểm quan trọng: <b>hiệu suất tháng nhân thẳng vào lương doanh số</b> — và nhân bằng đúng con số thực tế, nên từng phần trăm một đều ra tiền.",
+  fx2:{t:"Lương doanh số × hiệu suất", d:"Hoa hồng theo doanh thu, nhân với đúng phần trăm hiệu suất tháng.", hi:true},
+  k2Title:"Khoản 2 · Lương doanh số", k2Sm:"chỉ tiêu 150tr online · 75tr upsell", mlProd:"Lương doanh số",
+  RATE:{online:.02, upsell:.04, ret:.04, care:30000},
+  TARGET:{online:150000000, upsell:75000000, csat:9.5, ret:20}, WEIGHTS:{online:.40, upsell:.40, csat:.10, ret:.10},
+  k2Html(){ return `<table class="grid">
+      <thead><tr><th>Thể loại</th><th class="num">Tỷ lệ</th><th class="num">Số liệu tháng</th><th class="num">Thành tiền</th></tr></thead>
+      <tbody>
+        <tr><td class="lbl-c">Chốt khách online<span class="note-c">doanh thu khách mới chốt qua kênh online</span></td><td class="num">2%</td>
+          <td class="num"><input type="text" inputmode="numeric" class="money-in js-money" value="0" id="rvOnline"></td><td class="num money" id="tOnline">0đ</td></tr>
+        <tr><td class="lbl-c">Upsell<span class="note-c">doanh thu bán thêm tại studio sau khi chụp</span></td><td class="num">4%</td>
+          <td class="num"><input type="text" inputmode="numeric" class="money-in js-money" value="0" id="rvUpsell"></td><td class="num money" id="tUpsell">0đ</td></tr>
+        <tr><td class="lbl-c">Chốt khách quay lại<span class="note-c">doanh thu từ khách cũ mình chăm sóc quay lại</span></td><td class="num">4%</td>
+          <td class="num"><input type="text" inputmode="numeric" class="money-in js-money" value="0" id="rvReturn"></td><td class="num money" id="tReturn">0đ</td></tr>
+        <tr><td class="lbl-c">Chăm sóc khách sau chụp<span class="note-c">chăm đến khi hoàn thành, tính theo số khách</span></td><td class="num">30.000đ / khách</td>
+          <td class="num"><input type="number" min="0" step="1" value="0" id="careCount"></td><td class="num money" id="tCare">0đ</td></tr>
+      </tbody>
+      <tfoot>
+        <tr class="sumrow"><td colspan="3">Lương doanh số gốc</td><td class="num money" id="dsRaw">0đ</td></tr>
+        <tr class="sumrow"><td colspan="3">Sau khi nhân hiệu suất <span id="kTxt" style="color:var(--sand)">1,000×</span></td><td class="num money" id="dsFinal">0đ</td></tr>
+      </tfoot>
+    </table>
+    <div class="rule">
+      <div class="rule-h">Hiệu suất nhân vào đây, không nhân vào lương cứng</div>
+      <p><b>Hệ số chính là hiệu suất của bạn.</b> Hiệu suất 107,4% thì nhân 1,074×, hiệu suất 77% thì nhân 0,77× — không làm tròn xuống, không quy về bậc.</p>
+      <p style="margin-top:6px">Hệ số này nhân vào <b>lương doanh số gốc</b> ở trên. Lương cứng, OT và thưởng phạt không bị nhân.</p>
+      <p style="margin-top:6px"><b>Tăng đến đâu ăn đến đó.</b> Không có vách giữa các bậc, nên nửa phần trăm hiệu suất cũng ra tiền chứ không bị mất trắng vì chưa chạm mốc.</p>
+    </div>`; },
+  metTitle:"Hai chỉ số còn lại của hiệu suất", metSm:"doanh thu đã lấy từ Khoản 2",
+  metHtml: csatField + `<div class="fieldrow"><label for="returnCount">Số khách quay lại</label>
+      <input type="number" id="returnCount" min="0" step="1" value="0">
+      <span class="hint">số khách cũ mình chăm sóc và họ quay lại, chỉ tiêu 20 khách</span></div>
+    <div class="hint">Đây là <b>số lượng khách</b>, khác với ô doanh thu khách quay lại ở Khoản 2. Một ô tính tiền hoa hồng, một ô tính hiệu suất.</div>`,
+  perfSm:"trọng số 40 / 40 / 10 / 10",
+  bars:["DT chốt online · 40%","DT upsell · 40%","Hài lòng khách · 10%","Khách quay lại · 10%"],
+  perfRuleH:"Hiệu suất còn dùng ở đâu nữa",
+  perfRuleP:"Ngoài việc nhân vào lương doanh số hàng tháng, hiệu suất còn quyết định điểm ở mục Hiệu suất công việc trong bảng xét thăng cấp nghề, 3 tháng một lần.",
+  compute(TG){
+    const R=this.RATE, T=this.TARGET, W=this.WEIGHTS;
+    const rvOnline=Math.max(0,moneyVal($("rvOnline"))), rvUpsell=Math.max(0,moneyVal($("rvUpsell")));
+    const rvReturn=Math.max(0,moneyVal($("rvReturn"))), careN=Math.max(0,parseInt($("careCount").value)||0);
+    const tOnline=rvOnline*R.online, tUpsell=rvUpsell*R.upsell, tReturn=rvReturn*R.ret, tCare=careN*R.care;
+    setTxt("tOnline",vnd(tOnline)); setTxt("tUpsell",vnd(tUpsell)); setTxt("tReturn",vnd(tReturn)); setTxt("tCare",vnd(tCare));
+    const dsRaw=tOnline+tUpsell+tReturn+tCare; setTxt("dsRaw",vnd(dsRaw));
+    const csat=Math.max(0,parseFloat($("csat").value)||0), retN=Math.max(0,parseInt($("returnCount").value)||0);
+    const p1=rvOnline/TG.online*100, p2=rvUpsell/TG.upsell*100, p3=csat/T.csat*100, p4=retN/TG.ret*100;
+    const perf=p1*W.online+p2*W.upsell+p3*W.csat+p4*W.ret;
+    const k=perf/100, dsFinal=dsRaw*k;
+    setTxt("kTxt",k3(k)+"×"); setTxt("dsFinal",vnd(dsFinal));
+    return {amt:dsFinal, k2f:`${vnd(dsRaw)} × ${k3(k)}`, kx:`× ${k3(k)}`, perf, dsRaw, k, bars:[
+      {txt:`${tr(rvOnline)} / ${tr(TG.online)} · ${pct(p1)}%`, p:p1},
+      {txt:`${tr(rvUpsell)} / ${tr(TG.upsell)} · ${pct(p2)}%`, p:p2},
+      {txt:`${csat.toLocaleString('vi-VN')} / ${T.csat.toLocaleString('vi-VN')} · ${pct(p3)}%`, p:p3},
+      {txt:`${num(retN)} / ${num(Math.round(TG.ret))} · ${pct(p4)}%`, p:p4}]};
+  },
+  nudge(perf, nx, TG, res){
+    const W=this.WEIGHTS, need=nx.min-perf, perPoint=res.dsRaw*0.01, gain=res.dsRaw*(nx.min/100-res.k);
+    const addOnline=need/(100/TG.online*W.online), addUpsell=need/(100/TG.upsell*W.upsell), addRet=Math.ceil(need/(100/TG.ret*W.ret));
+    return `Mỗi <b>1% hiệu suất</b> tăng thêm cộng <b>${vnd(perPoint)}</b> vào lương doanh số — cộng ngay từ phần trăm đầu tiên, không phải chờ đủ bậc.<br>
+      Còn <b>${pct(need)}%</b> nữa là sang khoảng <b>${nx.name}</b>, tương ứng cộng thêm <b>${vnd(gain)}</b>.<br>
+      Tương đương cần thêm <b>${vnd(addOnline)}</b> doanh thu chốt online, hoặc <b>${vnd(addUpsell)}</b> doanh thu upsell, hoặc <b>${num(addRet)} khách quay lại</b>.`;
+  },
+  nudgeTopFn(res){ return `<b>Báo đốm</b> — khoảng hiệu suất cao nhất. Lương doanh số đang được nhân <b>${k3(res.k)}×</b>, và bạn lấy trọn 40/40 điểm hiệu suất cho kỳ xét thăng cấp.<br>
+      Hiệu suất không bị chặn trần: mỗi 1% tăng thêm vẫn cộng <b>${vnd(res.dsRaw*0.01)}</b> vào lương doanh số.`; },
+  capLbl:"Nhân thẳng vào lương doanh số — theo đúng con số thực tế",
+  capP:"Tính lại hàng tháng theo kết quả thực tế. Cột dưới cùng là mức lương doanh số tối thiểu của từng khoảng, tính trên số bạn đang nhập ở máy tính.",
+  capRule:`<div class="rule-h">Ba điều cần nhớ</div>
+    <p><b>Đây là bộ phận duy nhất có hiệu suất nhân vào lương.</b> Các bộ phận khác dùng hiệu suất chỉ để xét thăng cấp, riêng Sale &amp; CSKH thì nhân thẳng vào lương doanh số mỗi tháng.</p>
+    <p style="margin-top:6px"><b>Năm con vật chỉ là tên gọi cho từng khoảng.</b> Con số đem nhân luôn là hiệu suất thực tế: 77% là 0,77× chứ không tụt về 0,70×. Cột tiền bên dưới mỗi thẻ là mức <b>tối thiểu</b> của khoảng đó.</p>
+    <p style="margin-top:6px">Hiệu suất dưới 70% vẫn được tính đúng theo con số thực tế, nhưng cần ngồi lại với Lead Team tìm nguyên nhân trước khi chốt lương.</p>`,
+  anCard:(a,res)=>`<div class="d">hệ số ${(a.min/100).toLocaleString('vi-VN',{minimumFractionDigits:2})}× trở lên</div><div class="money">từ ${vnd(res.dsRaw*a.min/100)}</div>`,
+  rankDesc:["Thực tập, học việc","Tư vấn độc lập các gói cơ bản","Thành thạo cả online và offline","Dẫn dắt nhóm, xử lý ca khó","Bậc thầy, xây quy trình bán hàng"],
+  master:"Master cả Sale online + CSKH và bán hàng tại studio",
+  levelTail:"chưa kể lương doanh số",
+  qcRule:"<b>Không trừ vào lương cứng và không bị nhân hệ số.</b> Điểm ròng nhân 50.000đ ra một dòng riêng trong bảng lương, có thể âm hoặc dương.",
+  boiThuong:"<b>Bồi thường vật chất tách riêng.</b> Tư vấn sai gói làm hụt thu, gửi in sai, in sai hình khách thì bồi hoàn phần chênh lệch theo giá trị thực tế — không quy ra điểm và không tính vào trần 10 điểm. Nếu tháng này có, ghi xuống Khoản 6.",
+  k6Hint:"Khoản này phát sinh ngoài nên để tự nhập. Ghi rõ nội dung ở cột bên trái. Khoản bị trừ, ví dụ bồi thường phần chênh lệch do tư vấn sai gói, thì điền <b>số âm</b>.",
+  train:[["Kinh doanh","Phục vụ khách hàng, tư vấn, bán thêm, xử lý từ chối"],["Sản phẩm","Gói chụp, concept, chất liệu in phóng, album"],["Công cụ","Pancake, Larkbase, Lark Chat, quy trình dữ liệu"]],
+  crossTrain:"Sale online ↔ CSKH và bán hàng tại studio",
+  skillsOwn:[
+    {name:"Nắm bộ tài liệu vị trí & bảng giá",       src:"test viết quy trình"},
+    {name:"Tư vấn & chốt khách online trên Pancake",  src:"vị trí Sale & CSKH"},
+    {name:"Nhập & cập nhật dữ liệu khách trên Larkbase", src:"vị trí Sale & CSKH"},
+    {name:"Chăm sóc khách sau chụp đến khi hoàn thành", src:"vị trí Sale & CSKH"}],
+  skillsCross:[
+    {name:"Chụp ảnh cơ bản theo layout",              src:"Sản xuất hình ảnh"},
+    {name:"Makeup + làm tóc bé cơ bản",               src:"Makeup & Stylist"},
+    {name:"Phối trang phục & phụ kiện theo layout",   src:"Makeup & Stylist"},
+    {name:"Chỉnh màu / retouch ảnh cơ bản",           src:"Hậu kỳ"}],
+  footSrc:"Lưu hành nội bộ · Số liệu chính thức lấy theo Larkbase CRM chốt cuối tháng",
+  demoLabel:"Xem ví dụ chị Vân (T12/2024)", demoRank:"cv",
+  demo(){
+    setMoney($("rvOnline"),176189000); setMoney($("rvUpsell"),71940000); setMoney($("rvReturn"),21000000);
+    $("careCount").value=81; $("csat").value=9.8; $("returnCount").value=10;
+    $("otHours").value=0; $("ptBonus").value=0; $("ptPenalty").value=0;
+  },
+  resetDefaults(){ $("csat").value=9.5; }
+}
+};
+
+/* ================= TRẠNG THÁI ================= */
+let DK = "ms", D = DEPTS.ms, RANKS = [], PROMO = [], LAST_PERF = 0;
+
+/* ================= DỰNG PHẦN CHUNG (1 lần) ================= */
+$("rank").innerHTML = RANKS_BASE.map(r=>`<option value="${r.id}">${r.name} — ${vnd(r.base)}</option>`).join("");
+$("role").innerHTML = ROLES.map(r=>`<option value="${r.id}">${r.name}${r.rate?" — "+(r.rate*100).toLocaleString('vi-VN')+"%":""}</option>`).join("");
+$("tbExtra").innerHTML = Array.from({length:EXTRA_ROWS},(_,i)=>`
+  <tr><td><input type="text" placeholder="ghi rõ nội dung khoản phát sinh" data-exn="${i}"></td>
+      <td class="num"><input type="text" inputmode="numeric" class="js-money" value="0" data-exv="${i}" style="width:140px"></td></tr>`).join("");
+$("deptTabs").innerHTML = Object.entries(DEPTS).map(([k,d])=>`<button type="button" role="tab" data-dept="${k}">${d.tab}</button>`).join("");
+$("deptSel").innerHTML = Object.entries(DEPTS).map(([k,d])=>`<option value="${k}">${d.tab}</option>`).join("");
+
+$("scoreBody").innerHTML = `
+  <div class="srow">
+    <div class="top"><b>1. Hiệu suất công việc</b><span class="v"><span id="sc_perf">0</span> / 40</span></div>
+    <div class="desc">Lấy <b>hiệu suất trung bình 3 tháng gần nhất</b> trên Larkbase. Trung bình chia 100 nhân 40, tối đa 40 điểm. <b>Điều kiện:</b> không tháng nào dưới ${PERF_FLOOR}%.</div>
+    <div class="m3">
+      <div class="m3c"><span>Tháng thứ 1</span><input type="number" id="pm1" min="0" step="0.1" value="0"></div>
+      <div class="m3c"><span>Tháng thứ 2</span><input type="number" id="pm2" min="0" step="0.1" value="0"></div>
+      <div class="m3c"><span>Tháng thứ 3</span><input type="number" id="pm3" min="0" step="0.1" value="0"></div>
+      <div class="m3c avg"><span>Trung bình</span><b id="pmAvg">0%</b></div>
+    </div>
+    <button class="btn" id="btnFillPerf" style="margin-top:9px">Điền hiệu suất tháng này từ máy tính vào tháng thứ 3</button>
+    <div class="bartrack" style="margin-top:11px"><div class="barfill" id="sc_perf_bar"></div></div>
+    <div class="scwarn" id="perfWarn"></div>
+  </div>
+  <div class="srow">
+    <div class="top"><b>2. Kỷ luật</b><span class="v"><span id="sc_disc">20</span> / ${DISC_MAX}</span></div>
+    <div class="desc">Lấy tổng điểm phạt 3 tháng trên Larkbase, so với <b>chuẩn ${DISC_STD} điểm</b>. Mức độ vi phạm = điểm phạt ÷ ${DISC_STD}. Điểm kỷ luật = ${DISC_MAX} × (1 − mức độ vi phạm). Chạm ${DISC_STD} điểm phạt là 0 điểm. Vi phạm nghiêm trọng thì không được xét trong kỳ.</div>
+    <div class="scin"><label for="discPts" style="min-width:0">Tổng điểm phạt 3 tháng</label><input type="number" id="discPts" min="0" step="0.5" value="0"><span class="hint" id="discLvl"></span></div>
+    <div class="scwarn" id="discWarn"></div>
+  </div>
+  <div class="srow">
+    <div class="top"><b>3. Kỹ năng <span id="skTitle">chéo</span></b><span class="v"><span id="sc_cross">0</span> / <span id="skCap">20</span></span></div>
+    <div class="desc" id="skDesc"></div>
+    <div class="sclevels">Mức 1 · Biết: trả lời đúng ≥80% câu hỏi quy trình (1đ) · Mức 2 · Làm có người kèm: làm 1 ca thật, đạt ≥80% checklist (3đ) · Mức 3 · Làm độc lập: ≥3 ca thật không bị ghi lỗi (5đ). Người test là leader bộ phận khác, chấm ở tuần 3.</div>
+    <div id="skList"></div>
+    <div id="skCustomWrap">
+      <div id="skCustom"></div>
+      <button type="button" class="btn" id="btnAddSk" style="margin-top:9px">+ Thêm kỹ năng chéo khác</button>
+      <div class="sclevels" style="margin-top:6px">Chỉ nhập kỹ năng của <b>bộ phận khác</b> — việc thuộc nhiệm vụ của vị trí mình không tính là kỹ năng chéo. Tổng điểm vẫn không vượt trần của bậc.</div>
+    </div>
+  </div>
+  <div class="srow">
+    <div class="top"><b>4. Đánh giá 360°</b><span class="v"><span id="sc_360_v">0</span> / 20</span></div>
+    <div class="desc">HR khảo sát 3 nhóm ở tuần 2. Mỗi nhóm ra 1 điểm trung bình trên thang 10, rồi quy theo trọng số. Ở đây bạn chỉ tự ước lượng.</div>
+    <table class="grid g360">
+      <thead><tr><th>Nhóm đánh giá</th><th class="num">Trọng số</th><th class="num">Điểm khảo sát /10</th><th class="num">Quy ra</th></tr></thead>
+      <tbody>${G360.map(g=>`<tr><td class="lbl-c">${g.name}<span class="note-c">${g.who}</span></td><td class="num">${g.w}đ</td>
+        <td class="num"><input type="number" id="${g.id}" min="0" max="10" step="0.5" value="0"></td><td class="num money" id="${g.id}_v">0</td></tr>`).join("")}</tbody>
+    </table>
+  </div>`;
+$("target").innerHTML = PROMO_BASE.map((p,i)=>`<option value="${i}">${p.to}</option>`).join("");
+$("target").value = "2";
+
+/* ================= ÁP BỘ PHẬN ================= */
+function applyDept(key){
+  if(!DEPTS[key]) key = "ms";
+  DK = key; D = DEPTS[key];
+  RANKS = RANKS_BASE.map((r,i)=>({...r, desc:D.rankDesc[i]}));
+  PROMO = PROMO_BASE.map(p=>({...p, extra:p.extra.map(x=>x==="__MASTER__"?D.master:x)}));
+
+  document.title = `Lộ Trình Lương — ${D.name} | Ngọt Studio`;
+  document.querySelectorAll("[data-dept]").forEach(b=>{ const on=b.dataset.dept===key; b.classList.toggle("on",on); b.setAttribute("aria-selected",on); });
+  $("deptSel").value = key;
+  $("eyebrow").textContent = `Ngọt Studio · Bộ phận ${D.name}`;
+  $("lede").innerHTML = D.lede;
+  $("fx2t").textContent = D.fx2.t; $("fx2d").textContent = D.fx2.d; $("fx2").classList.toggle("hi", !!D.fx2.hi);
+  $("btnDemo").textContent = D.demoLabel;
+
+  $("k2Title").textContent = D.k2Title; $("k2Sm").textContent = D.k2Sm; $("k2Body").innerHTML = D.k2Html();
+  $("metTitle").textContent = D.metTitle; $("metSm").textContent = D.metSm; $("metBody").innerHTML = D.metHtml;
+  $("mlProdLbl").textContent = D.mlProd; $("mlKx").textContent = "";
+  $("perfSm").textContent = D.perfSm;
+  $("barwrap").innerHTML = D.bars.map((b,i)=>`<div class="barrow"><div class="top"><b>${b}</b><span id="b${i+1}">0</span></div><div class="bartrack"><div class="barfill" id="f${i+1}"></div><div class="mark" style="left:66.67%"></div></div></div>`).join("");
+  $("perfRuleH").textContent = D.perfRuleH; $("perfRuleP").innerHTML = D.perfRuleP;
+  $("qcRule1").innerHTML = D.qcRule; $("boiThuong").innerHTML = D.boiThuong; $("k6Hint").innerHTML = D.k6Hint;
+  $("capLbl").textContent = D.capLbl; $("capP").textContent = D.capP; $("capRule").innerHTML = D.capRule;
+  $("trainSkills").innerHTML = D.train.map(r=>`<tr><td class="lbl-c">${r[0]}</td><td>${r[1]}</td></tr>`).join("");
+  $("crossTrain").innerHTML = D.crossTrain;
+  $("footDept").textContent = `Lộ trình lương bộ phận ${D.name} · Công cụ tính lương v3.0`;
+  $("footSrc").textContent = D.footSrc;
+
+  $("ladder").innerHTML = RANKS.map((r,i)=>`
+    <div class="lv" data-lv="${i}">
+      <div class="n">Bậc ${i+1}</div><div class="t">${r.name}</div>
+      <div class="s">${(r.base/1000000).toLocaleString('vi-VN')} triệu</div>
+      <div class="d">${r.exp} · ${r.desc}</div>
+    </div>`).join("");
+
+  document.querySelectorAll(".js-money").forEach(attachMoney);
+  $("skCustom").innerHTML = "";
+  renderSkills();
+  try{ const u=new URL(location.href); u.searchParams.set("bp",key); history.replaceState(null,"",u); }catch(_){}
+  try{ localStorage.setItem("ngot_bp",key); }catch(_){}
+  runDemo(false);
+  showLevel(RANKS.findIndex(r=>r.id===D.demoRank));
+}
+
+/* ================= TÍNH LƯƠNG ================= */
+function calc(){
+  const rank = RANKS.find(r=>r.id===$("rank").value) || RANKS[0];
+  $("baseTxt").textContent = vnd(rank.base);
+  const role = ROLES.find(r=>r.id===$("role").value) || ROLES[0];
+  const cut  = role.cut;
+  const TG = {}; for(const k in D.TARGET) TG[k] = D.TARGET[k]*(1-cut);
+
+  /* Khoản 2 + hiệu suất — riêng từng bộ phận */
+  const res = D.compute(TG);
+  const perf = res.perf;
+  $("mlKx").textContent = res.kx || "";
+
+  /* Khoản 3 */
+  const revMonth = Math.max(0, moneyVal($("revMonth")));
+  const teamPct = Math.max(0, parseFloat($("teamPct").value)||0);
+  const gateOk  = teamPct >= ALLOW_GATE;
+  const allow   = gateOk ? revMonth * role.rate : 0;
+  $("roleRate").textContent = (role.rate*100).toLocaleString('vi-VN') + "%";
+  $("gateWarn").innerHTML = (role.rate>0 && !gateOk)
+    ? `<div class="capwarn">Team mới đạt <b>${pct(teamPct)}%</b> chỉ tiêu, chưa tới ngưỡng <b>${ALLOW_GATE}%</b> nên <b>chưa được nhận phụ cấp chức danh</b> tháng này. Chỉ tiêu cá nhân vẫn được giảm ${(cut*100).toLocaleString('vi-VN')}% như bình thường.</div>` : "";
+  $("allowSum").textContent = vnd(allow);
+  $("mlAllow").textContent  = vnd(allow);
+  $("mlRoleRate").textContent = role.rate ? `${role.name} · ${(role.rate*100).toLocaleString('vi-VN')}%${gateOk?"":" · chưa đạt ngưỡng"}` : "";
+
+  /* Khoản 4 */
+  const ot = (parseFloat($("otHours").value)||0) * moneyVal($("otRate"));
+
+  /* Khoản 5 */
+  const tB = Math.max(0, parseFloat($("ptBonus").value)||0);
+  const tPraw = Math.max(0, parseFloat($("ptPenalty").value)||0);
+  const tP = Math.min(tPraw, PT_CAP);
+  const net = tB - tP, qc = net*PT_VALUE;
+  $("pbT").textContent = d1(tB); $("pbP").textContent = d1(tP);
+  $("pbN").textContent = (net>0?"+":"") + d1(net);
+  const nEl=$("pbN").parentElement; nEl.classList.toggle("pos", net>0); nEl.classList.toggle("neg", net<0);
+  $("capWarn").innerHTML = tPraw > PT_CAP
+    ? `<div class="capwarn">Điểm phạt <b>${d1(tPraw)}</b> đã vượt trần 10 điểm. Phần vượt <b>không bị trừ tiền tiếp</b>, nhưng trường hợp này chuyển sang quy trình kỷ luật lao động: họp nhắc nhở lần 1, cảnh cáo văn bản lần 2, xem xét chấm dứt hợp đồng lần 3.</div>` : "";
+
+  /* Khoản 6 */
+  let ex=0; for(let i=0;i<EXTRA_ROWS;i++) ex += moneyVal(document.querySelector(`[data-exv="${i}"]`));
+  $("exSum").textContent = vnd(ex);
+
+  /* Tổng */
+  const grand = rank.base + res.amt + allow + ot + qc + ex;
+  $("mlBase").textContent = vnd(rank.base);
+  $("mlProd").textContent = vnd(res.amt);
+  $("mlOt").textContent   = vnd(ot);
+  $("mlQc").textContent   = (qc>0?"+":"") + vnd(qc);
+  $("mlQc").style.color   = qc>0?"var(--green)":(qc<0?"var(--red)":"");
+  $("mlEx").textContent   = vnd(ex);
+  $("mlNetPts").textContent = net ? `(${net>0?"+":""}${d1(net)} điểm)` : "";
+  $("grand").textContent  = vnd(grand);
+  $("formula").textContent = `${vnd(rank.base)} + ${res.k2f} + ${vnd(allow)} + ${vnd(ot)} ${qc<0?"−":"+"} ${vnd(Math.abs(qc))} ${ex<0?"−":"+"} ${vnd(Math.abs(ex))}`;
+
+  /* Hiệu suất */
+  $("perfVal").textContent = pct(perf);
+  res.bars.forEach((b,i)=>{ setTxt("b"+(i+1), b.txt); const f=$("f"+(i+1)); if(f) f.style.width = Math.min(Math.max(b.p,0),150)/1.5+"%"; });
+  $("cutNote").innerHTML = cut>0
+    ? `Chỉ tiêu đã giảm <b>${(cut*100).toLocaleString('vi-VN')}%</b> theo chức danh <b>${role.name}</b> — thời gian dành cho quản lý là thời gian không làm chuyên môn.` : "";
+
+  let an=null;
+  for(let i=ANIMALS.length-1;i>=0;i--){ if(perf>=ANIMALS[i].min){ an=ANIMALS[i]; break; } }
+  $("anName").textContent = an ? an.name : "Dưới 70%";
+  $("anK").textContent = k3(perf/100) + "×";
+  $("animalBadge").style.background = an ? an.color : "#E0DAD0";
+  $("anGrid").innerHTML = ANIMALS.map(a=>`
+    <div class="an${an&&a.name===an.name?" cur":""}" style="border-top-color:${a.color}">
+      <div class="t">${a.name}</div><div class="h">${band(a)}</div>${D.anCard(a,res)}
+    </div>`).join("");
+
+  LAST_PERF = perf;
+  $("perfPts").textContent = d1(Math.min(40, perf/100*40));
+
+  const nx = ANIMALS.find(a=>a.min>perf), nd=$("nudge");
+  if(!nx){ nd.className="nudge ok"; nd.innerHTML = D.nudgeTopFn ? D.nudgeTopFn(res) : D.nudgeTop; }
+  else   { nd.className="nudge"; nd.innerHTML = D.nudge(perf, nx, TG, res); }
+  calcScore();
+}
+
+/* ================= CHẤM ĐIỂM THĂNG CẤP ================= */
+function renderSkills(){
+  const ti = parseInt($("target").value)||0, p = PROMO[ti] || PROMO_BASE[ti];
+  const own = ti===0, list = own ? D.skillsOwn : D.skillsCross;
+  $("skTitle").textContent = own ? "vị trí" : "chéo";
+  $("skCap").textContent = p.cap;
+  $("skDesc").innerHTML = (own ? `Lên Nhân viên: chấm ${list.length} kỹ năng của <b>chính vị trí</b>. ` : `Chấm ${list.length} kỹ năng có sẵn của <b>bộ phận khác</b>, thêm dòng nếu có kỹ năng chéo khác. `)
+    + `Mỗi kỹ năng tối đa 5 điểm. Trần khi lên <b>${p.to}</b>: <b>${p.cap}/20</b> — ${p.cross.replace(/\s*\(.*\)$/,"")}.`;
+  $("skCustomWrap").style.display = own ? "none" : "";
+  $("skList").innerHTML = list.map((k,i)=>`
+    <div class="sk"><div>${k.name}<span class="src">${k.src}</span></div>
+      <select data-sk="${i}" aria-label="${k.name}">${SK_LEVELS.map(l=>`<option value="${l.v}">${l.t} — ${l.pts}đ</option>`).join("")}</select></div>`).join("");
+}
+
+let SK_SEQ = 0;
+function addCustomSkill(){
+  const id = "x"+(++SK_SEQ);
+  const row = document.createElement("div");
+  row.className = "sk skx"; row.dataset.row = id;
+  row.innerHTML = `<div class="skx-in">
+      <input type="text" placeholder="Tên kỹ năng chéo" aria-label="Tên kỹ năng chéo">
+      <input type="text" class="skx-dept" placeholder="Bộ phận sở hữu kỹ năng" aria-label="Bộ phận sở hữu kỹ năng">
+    </div>
+    <div class="skx-r">
+      <select data-sk="${id}" aria-label="Mức đạt">${SK_LEVELS.map(l=>`<option value="${l.v}">${l.t} — ${l.pts}đ</option>`).join("")}</select>
+      <button type="button" class="btn skx-del" title="Xoá dòng" aria-label="Xoá dòng">×</button>
+    </div>`;
+  $("skCustom").appendChild(row);
+  row.querySelector("input").focus();
+}
+
+function calcScore(){
+  const ms=["pm1","pm2","pm3"].map(id=>Math.max(0,parseFloat($(id).value)||0));
+  const avg=(ms[0]+ms[1]+ms[2])/3;
+  $("pmAvg").textContent = pct(avg)+"%";
+  const scPerf = Math.min(40, avg/100*40);
+  $("sc_perf").textContent = d1(scPerf);
+  $("sc_perf_bar").style.width = (scPerf/40*100)+"%";
+  const lowM = ms.some(m=>m>0 && m<PERF_FLOOR);
+  $("perfWarn").textContent = lowM ? `Có tháng dưới ${PERF_FLOOR}% — chưa đủ điều kiện xét kỳ này dù tổng điểm đạt.` : "";
+
+  const pen = Math.max(0, parseFloat($("discPts").value)||0);
+  const lvl = pen/DISC_STD;
+  const scDisc = Math.max(0, DISC_MAX*(1-lvl));
+  $("discLvl").innerHTML = `mức độ vi phạm <b>${pct(lvl*100)}%</b> so với chuẩn`;
+  $("discWarn").textContent = pen>DISC_STD ? `Vượt chuẩn ${DISC_STD} điểm phạt — điểm kỷ luật bằng 0.` : "";
+  $("sc_disc").textContent = d1(scDisc);
+
+  const p = PROMO[parseInt($("target").value)];
+  let skRaw = 0;
+  const ownMode = parseInt($("target").value)===0;
+  document.querySelectorAll(ownMode ? "#skList [data-sk]" : "[data-sk]").forEach(el=>{ skRaw += SK_LEVELS[parseInt(el.value)||0].pts; });
+  const scCross = Math.min(p.cap, skRaw);
+  $("sc_cross").textContent = d1(scCross);
+
+  let sc360 = 0;
+  G360.forEach(g=>{ const v=Math.min(10,Math.max(0,parseFloat($(g.id).value)||0)); const pts=v/10*g.w; sc360+=pts; $(g.id+"_v").textContent=d1(pts); });
+  $("sc_360_v").textContent = d1(sc360);
+
+  const total = scPerf + scDisc + scCross + sc360;
+  $("scTotal").textContent = d1(total);
+  const msg=$("scMsg");
+  if(lowM){
+    msg.className="msg fail";
+    msg.innerHTML = `Tổng ${d1(total)}/100, nhưng có tháng hiệu suất dưới ${PERF_FLOOR}% nên <b>chưa đủ điều kiện</b> xét lên <b>${p.to}</b> kỳ này.`;
+  } else if(total>=p.min){
+    msg.className="msg pass";
+    msg.innerHTML = `Đủ điểm cho <b>${p.to}</b> (cần ${p.min}/100).<br>Còn phải đủ <b>${p.exp}</b> kinh nghiệm${p.extra.length?", đạt các điều kiện bắt buộc của bậc":""} và không có vi phạm nghiêm trọng trong 6 tháng gần nhất.`;
+  } else {
+    msg.className="msg fail";
+    msg.innerHTML = `Còn thiếu <b>${d1(p.min-total)} điểm</b> để lên <b>${p.to}</b> (cần ${p.min}/100).<br>Chỗ dễ cải thiện nhất: nâng kỹ năng lên mức 2–3 và giữ hiệu suất đều 3 tháng.`;
+  }
+}
+
+function showLevel(i){
+  if(i<0) i=0;
+  document.querySelectorAll(".lv").forEach((el,j)=>el.classList.toggle("on", j===i));
+  const r=RANKS[i], p=PROMO[i], d=$("lvDetail");
+  if(!p){ d.innerHTML = `<h4>${r.name} — ${vnd(r.base)} lương cứng</h4><div style="font-size:14px;color:var(--muted)">Bậc cao nhất của lộ trình. Kinh nghiệm ${r.exp}. ${r.desc}.</div>`; return; }
+  d.innerHTML = `<h4>${r.name} → ${p.to}</h4>
+    <ul>
+      <li>Kinh nghiệm cần có: <b>${p.exp}</b></li>
+      <li>Tổng điểm tối thiểu: <b>${p.min}/100</b></li>
+      <li>Kỹ năng: ${p.cross}</li>
+      ${p.extra.map(x=>`<li>${x}</li>`).join("")}
+      <li>Không có vi phạm nghiêm trọng trong 6 tháng gần nhất</li>
+      <li>Điểm hiệu suất lấy theo <b>trung bình 3 tháng gần nhất</b>, không phải riêng tháng cuối</li>
+    </ul>
+    <div class="hint">Sau khi lên bậc này, kỳ xét kế tiếp cách <b>6 tháng</b> thay vì 3 tháng.<br>Lương cứng tăng từ <b>${vnd(r.base)}</b> lên <b>${vnd(RANKS[i+1].base)}</b> — chênh <b>${vnd(RANKS[i+1].base-r.base)}</b> mỗi tháng, ${D.levelTail}.</div>`;
+}
+
+/* ================= VÍ DỤ / XOÁ ================= */
+function runDemo(scroll){
+  $("rank").value = D.demoRank;
+  $("role").value="none"; setMoney($("revMonth"),0); $("teamPct").value=100;
+  setMoney($("otRate"),30000);
+  for(let i=0;i<EXTRA_ROWS;i++){ const n=document.querySelector(`[data-exn="${i}"]`); if(n) n.value=""; setMoney(document.querySelector(`[data-exv="${i}"]`),0); }
+  D.demo((id,v)=>{ const el=document.querySelector(`[data-qty="${id}"]`); if(el) el.value=v; });
+  calc();
+  const v=LAST_PERF.toFixed(1); $("pm1").value=v; $("pm2").value=v; $("pm3").value=v;
+  calcScore();
+  if(scroll) $("calc").scrollIntoView({behavior:"smooth"});
+}
+
+/* ================= SỰ KIỆN ================= */
+document.addEventListener("input", e=>{
+  if(e.target.matches("#scoreBody *")){ calcScore(); return; }
+  if(e.target.matches("input[type=number], input[type=text]")) calc();
+});
+document.addEventListener("change", e=>{
+  if(e.target.matches("[data-sk]")) calcScore();
+});
+$("target").addEventListener("change", ()=>{ renderSkills(); calcScore(); });
+$("btnAddSk").addEventListener("click", addCustomSkill);
+$("skCustom").addEventListener("click", e=>{ const b=e.target.closest(".skx-del"); if(b){ b.closest(".skx").remove(); calcScore(); } });
+$("rank").addEventListener("change", calc);
+$("role").addEventListener("change", calc);
+$("btnFillPerf").addEventListener("click", ()=>{ $("pm3").value = LAST_PERF.toFixed(1); calcScore(); });
+$("ladder").addEventListener("click", e=>{ const el=e.target.closest(".lv"); if(el) showLevel(parseInt(el.dataset.lv)); });
+$("deptTabs").addEventListener("click", e=>{ const b=e.target.closest("[data-dept]"); if(b && b.dataset.dept!==DK) applyDept(b.dataset.dept); });
+$("deptSel").addEventListener("change", e=>applyDept(e.target.value));
+$("btnDemo").addEventListener("click", ()=>runDemo(true));
+$("btnReset").addEventListener("click", ()=>{
+  document.querySelectorAll("#calc input[type=number]").forEach(el=>el.value=0);
+  document.querySelectorAll("#calc input[type=text]").forEach(el=>el.value = el.classList.contains("js-money") ? "0" : "");
+  $("role").value="none"; setMoney($("revMonth"),0); $("teamPct").value=100;
+  setMoney($("otRate"),30000);
+  D.resetDefaults();
+  calc();
+});
+
+/* ================= KHỞI ĐỘNG ================= */
+(function init(){
+  let key = null;
+  try{ key = new URLSearchParams(location.search).get("bp"); }catch(_){}
+  if(!key){ try{ key = localStorage.getItem("ngot_bp"); }catch(_){} }
+  applyDept(key && DEPTS[key] ? key : "ms");
+})();
+
+</script>
+</body>
+</html>
